@@ -38,6 +38,7 @@ def webhook():
 
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
+                    received_message(recipient_id)
                     try: 
                         message_text = messaging_event["message"]["text"]  # the message's text
             
@@ -58,6 +59,8 @@ def webhook():
   except:
     pass  
 
+def received_message(recipient_id):
+    log("Message received from {recipient}".format(recipient=recipient_id))
 
 def send_message(recipient_id, message_text):
 
