@@ -9,6 +9,8 @@ def classify(msg):
     ##When msg is just one word, we assume the user sent a company name or symbol
     if " " not in msg:
         match = best_match(msg)
+        if match = []:
+            return "Sorry, I don't understand you."
         info = sd.stock_info(match[0])
         if 'AM' in info[1] or 'PM' in info[1]:
             return "The price of "+match[0]+" at "+info[1]+" is $"+str(info[0])+"."
