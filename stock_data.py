@@ -3,7 +3,7 @@ import json
 
 def stock_match(msg):
     try:
-        original = urllib.request.urlopen('https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords='+msg+'&apikey='+os.environ.get("ALPHAVANTAGE_TOKEN",None))
+        original = urllib.request.urlopen('https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords='+msg+'&apikey=3VWEA280OOGR9AL4')
     except ValueError:
         print("\nInvalid Entry")
         start()
