@@ -13,10 +13,9 @@ def classify(msg):
             return "Sorry, I don't understand you."
         info = sd.stock_info(match[0])
         if 'AM' in info[1] or 'PM' in info[1]:
-            return "The price of "+match[0]+" at "+info[1]+" is $"+str(info[0])+"."
+            return "The price of "+match[0]+" at "+info[1]+" is $"+str(info[0])+".",match[0],""
         else:
-            return "The price of "+match[0]+" in "+info[1]+" is $"+str(info[0])+"."
-        
+            return "The price of "+match[0]+" in "+info[1]+" is $"+str(info[0])+".",match[0],""        
 
     return "Sorry, I don't understand you."
 
@@ -27,4 +26,3 @@ if __name__ == '__main__':
     while(1):
       msg=input("Enter something: ")
       print(classify(msg))	
-
