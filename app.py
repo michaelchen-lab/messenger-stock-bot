@@ -42,7 +42,7 @@ def webhook():
                     try: 
                         message_text = messaging_event["message"]["text"]  # the message's text
             
-                        reply=predict(message_text)
+                        reply,extra1,extra2 = predict(message_text)
                         send_message(sender_id, str(reply))
                     except:
                         send_message(sender_id,str("Sorry! I didn't get that."))    
@@ -72,14 +72,39 @@ def send_message(recipient_id, message_text):
     headers = {
         "Content-Type": "application/json"
     }
-    data = json.dumps({
-        "recipient": {
-            "id": recipient_id
-        },
-        "message": {
-            "text": message_text
-        }
-    })
+    if 'Sorry' in message_text:
+        data = json.dumps({
+            "recipient": {
+                "id": recipient_id
+            },
+            "message": {
+                "text": message_text
+            }
+        })
+    else:
+        data = json.dumps({
+            "recipient": {
+                "id": recipient_id
+            },
+            "message": {
+                "attachment":{
+                    "type":"template",
+                    "payload":{
+                        "template_type":"button",
+                        "text":message_text,
+                        "buttons":[
+                            {
+                                "type":"postback",
+                                "title":"Description",
+                                "payload": extra1+" description"
+                            },
+                            {
+                                "type":"postback",
+                                "title":"Financials",
+                                "payload": extra1+" description"
+            }
+        })
+        
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
         log(r.status_code)
