@@ -43,7 +43,7 @@ def webhook():
                         message_text = messaging_event["message"]["text"]  # the message's text
             
                         reply,extra1,extra2 = predict(message_text)
-                        send_message(sender_id, str(reply))
+                        send_message(sender_id, str(reply),str(extra1),str(extra2))
                     except:
                         send_message(sender_id,str("Sorry! I didn't get that."))    
                 if messaging_event.get("delivery"):  # delivery confirmation
@@ -62,7 +62,7 @@ def webhook():
 def received_message(recipient_id):
     log("Message received from {recipient}".format(recipient=recipient_id))
 
-def send_message(recipient_id, message_text):
+def send_message(recipient_id, message_text,extra1,extra2):
 
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
 
