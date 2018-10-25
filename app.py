@@ -102,6 +102,10 @@ def send_message(recipient_id, message_text):
                                 "type":"postback",
                                 "title":"Financials",
                                 "payload": extra1+" description"
+                            }
+                        ]
+                    }
+                }
             }
         })
         
@@ -116,7 +120,8 @@ def log(message):  # simple wrapper for logging to stdout on heroku
     sys.stdout.flush()
 
 def predict(incoming_msg):
-    return predict_reply.classify(incoming_msg);
+    reply,extra1,extra2 = predict_reply.classify(incoming_msg)
+    return reply,extra1,extra2
 
 if __name__ == '__main__':
     app.run(debug=True)
