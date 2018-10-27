@@ -40,6 +40,6 @@ def stock_describe(stock):
     data = get_data(stock,'company')
 
     ## Shows the stock's name, CEO, sector, industry and description
-    info = [data['companyName'],data['website'],'CEO',data['CEO'],'Sector',data['sector'],'Industry',data['industry'],'Description',data['description']]
-    return info 
+    info = [data['companyName'],data['website'],'Exchange',data['exchange'],'CEO',data['CEO'],'Sector',data['sector'],'Industry',data['industry']]
+    return info  
     
