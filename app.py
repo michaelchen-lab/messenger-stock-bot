@@ -23,7 +23,6 @@ def verify():
 
 @app.route('/', methods=['POST'])
 def webhook():
-
     # endpoint for processing incoming messaging events
   try:
     data = request.get_json()
@@ -42,10 +41,10 @@ def webhook():
                     try: 
                         message_text = messaging_event["message"]["text"]  # the message's text
             
-                        reply,extra1,extra2 = predict(message_text)
-                        send_message(sender_id, str(reply),str(extra1),str(extra2))
+                        reply,extra1,extra2,mode = predict(message_text)
+                        send_message(sender_id, str(reply),str(extra1),str(extra2),mode)
                     except:
-                        send_message(sender_id,str("Sorry! I didn't get that."))    
+                        send_message(sender_id,str("Sorry! I didn't get that."),"","","other")    
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
 
@@ -62,7 +61,7 @@ def webhook():
 def received_message(recipient_id):
     log("Message received from {recipient}".format(recipient=recipient_id))
 
-def send_message(recipient_id, message_text,extra1,extra2):
+def send_message(recipient_id, message_text,extra1,extra2,mode):
 
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
 
@@ -72,7 +71,8 @@ def send_message(recipient_id, message_text,extra1,extra2):
     headers = {
         "Content-Type": "application/json"
     }
-    if 'Sorry' in message_text:
+    if mode == 'other':
+        ## When the bot is not sending stock messages
         data = json.dumps({
             "recipient": {
                 "id": recipient_id
@@ -81,7 +81,8 @@ def send_message(recipient_id, message_text,extra1,extra2):
                 "text": message_text
             }
         })
-    else:
+    elif mode == 'symbol':
+        ## When sending information on a stock
         data = json.dumps({
             "recipient": {
                 "id": recipient_id
@@ -112,6 +113,50 @@ def send_message(recipient_id, message_text,extra1,extra2):
                 }
             }
         })
+    elif mode == 'list':
+        ## When sending description of stock 
+        data = json.dumps({
+            "recipient":{
+                "id": recipient_id
+            },
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "list",
+                        "top_element_style": "compact",
+                        "elements": [
+                            {
+                                "title": reply[0],
+                                "buttons": [
+                                    {
+                                        "title": "View website",
+                                        "type": "web_url",
+                                        "url": reply[1]
+                                    }
+                                ]       
+                            },
+                            {
+                                "title": reply[2],
+                                "subtitle": reply[3]
+                            },
+                            {
+                                "title": reply[4],
+                                "subtitle": reply[5]
+                            },
+                            {
+                                "title": reply[6],
+                                "subtitle": reply[7]
+                            },
+                            {
+                                "title": reply[8],
+                                "subtitle": reply[9]
+                            }
+                        ]
+                    }
+                }
+            }
+        })
         
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
@@ -123,6 +168,7 @@ def log(message):  # simple wrapper for logging to stdout on heroku
     print(str(message))
     sys.stdout.flush()
 
+## Link to predict_reply.py
 def predict(incoming_msg):
     reply,extra1,extra2 = predict_reply.classify(incoming_msg)
     return reply,extra1,extra2
