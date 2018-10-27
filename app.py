@@ -128,28 +128,28 @@ def send_message(recipient_id, message_text,extra1,extra2,mode):
                         "top_element_style": "compact",
                         "elements": [
                             {
-                                "title": reply[0],
+                                "title": message_text[0],
                                 "buttons": [
                                     {
                                         "title": "View website",
                                         "type": "web_url",
-                                        "url": reply[1],
-                                        "fallback_url": reply[1]
+                                        "url": message_text[1],
+                                        "fallback_url": message_text[1]
                                     }
                                 ]       
                             },
                             {
-                                "title": reply[2],
-                                "subtitle": reply[3]
+                                "title": message_text[2],
+                                "subtitle": message_text[3]
                             },
                             {
-                                "title": reply[4],
-                                "subtitle": reply[5]
+                                "title": message_text[4],
+                                "subtitle": message_text[5]
                             },
                             {
-                                "title": reply[6],
-                                "subtitle": reply[7]
-                            }
+                                "title": message_text[6],
+                                "subtitle": message_text[7]
+                            },
                         ]
                     }
                 }
