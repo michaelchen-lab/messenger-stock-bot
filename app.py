@@ -134,6 +134,7 @@ def send_message(recipient_id, message_text,extra1,extra2,mode):
                                         "title": "View website",
                                         "type": "web_url",
                                         "url": message_text[1],
+                                        "messenger_extensions": true,
                                         "fallback_url": message_text[1]
                                     }
                                 ]       
