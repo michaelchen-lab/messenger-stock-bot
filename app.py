@@ -94,8 +94,6 @@ def send_message(recipient_id, message_text,extra1,extra2):
                         "elements":[
                             {
                             "title": extra1,
-                            "image_url": 'logo.clearbit.com/'+extra2,
-                            "image_aspect_ratio": "square",
                             "subtitle": message_text,
                             "buttons": [
                                 {
