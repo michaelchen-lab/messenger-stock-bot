@@ -38,8 +38,13 @@ def stock_info(stock):
 
 def stock_describe(stock):
     data = get_data(stock,'company')
+    website = data['website']
+    try:
+        website = website.replace('http://','https://')
+    except:
+        pass
 
     ## Shows the stock's name, CEO, sector, industry and description
-    info = [data['companyName'],data['website'],'CEO',data['CEO'],'Sector',data['sector'],'Industry',data['industry']]
-    return info  
+    info = [data['companyName'],website,'CEO',data['CEO'],'Sector',data['sector'],'Industry',data['industry']]
+    return info 
     
