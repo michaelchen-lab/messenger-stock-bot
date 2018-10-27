@@ -12,12 +12,10 @@ def classify(msg):
         if match == []:
             return "Sorry, I don't understand you."
         info = sd.stock_info(match[0])
-        if 'AM' in info[1] or 'PM' in info[1]:
-            return "The price of "+match[0]+" at "+info[1]+" is $"+str(info[0])+".",match[0],""
-        else:
-            return "The price of "+match[0]+" in "+info[1]+" is $"+str(info[0])+".",match[0],""        
+        print(info)
+        return "$"+str(info[0])+" (as of "+info[1]+")",match[0],info[2]       
 
-    return "Sorry, I don't understand you."
+    return "Sorry, I don't understand you.","",""
 
 def best_match(msg):
     return sd.stock_match(msg)
