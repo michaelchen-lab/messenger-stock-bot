@@ -42,7 +42,8 @@ def webhook():
                         message_text = messaging_event["message"]["text"]  # the message's text
             
                         reply,extra1,extra2,mode = predict(message_text)
-                        send_message(sender_id, str(reply),str(extra1),str(extra2),mode)
+                        print('done')
+                        send_message(sender_id, reply,str(extra1),str(extra2),mode)
                     except:
                         send_message(sender_id,str("Sorry! I didn't get that."),"","","other")    
                 if messaging_event.get("delivery"):  # delivery confirmation
@@ -95,7 +96,7 @@ def send_message(recipient_id, message_text,extra1,extra2,mode):
                         "elements":[
                             {
                             "title": extra1,
-                            "subtitle": message_text,
+                            "subtitle": str(message_text),
                             "buttons": [
                                 {
                                     "type":"postback",
