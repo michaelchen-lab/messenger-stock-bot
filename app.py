@@ -90,18 +90,23 @@ def send_message(recipient_id, message_text,extra1,extra2):
                 "attachment":{
                     "type":"template",
                     "payload":{
-                        "template_type":"button",
-                        "text":message_text,
-                        "buttons":[
+                        "template_type":"generic",
+                        "elements":[
                             {
-                                "type":"postback",
-                                "title":"Description",
-                                "payload": extra1+" description"
-                            },
-                            {
-                                "type":"postback",
-                                "title":"Financials",
-                                "payload": extra1+" description"
+                            "title": extra1,
+                            "image_url": 'logo.clearbit.com/'+extra2,
+                            "subtitle": message_text,
+                            "buttons": [
+                                {
+                                    "type":"postback",
+                                    "title":"Description",
+                                    "payload": extra1+" description"
+                                },{
+                                    "type":"postback",
+                                    "title":"Financials",
+                                    "payload": extra1+" financials"
+                                }
+                            ]
                             }
                         ]
                     }
