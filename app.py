@@ -42,7 +42,6 @@ def webhook():
                         message_text = messaging_event["message"]["text"]  # the message's text
             
                         reply,extra1,extra2,mode = predict(message_text)
-                        print('done')
                         send_message(sender_id, reply,str(extra1),str(extra2),mode)
                     except:
                         send_message(sender_id,str("Sorry! I didn't get that."),"","","other")    
@@ -95,19 +94,20 @@ def send_message(recipient_id, message_text,extra1,extra2,mode):
                         "template_type":"generic",
                         "elements":[
                             {
-                            "title": extra1,
-                            "subtitle": str(message_text),
-                            "buttons": [
-                                {
-                                    "type":"postback",
-                                    "title":"Description",
-                                    "payload": extra1+" description"
-                                },{
-                                    "type":"postback",
-                                    "title":"Financials",
-                                    "payload": extra1+" financials"
-                                }
-                            ]
+                                "title": extra1,
+                                "subtitle": str(message_text),
+                                "buttons": [
+                                    {
+                                        "type":"postback",
+                                        "title":"Description",
+                                        "payload": extra1+" description"
+                                    },
+                                    {
+                                        "type":"postback",
+                                        "title":"Financials",
+                                        "payload": extra1+" financials"
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -171,8 +171,8 @@ def log(message):  # simple wrapper for logging to stdout on heroku
 
 ## Link to predict_reply.py
 def predict(incoming_msg):
-    reply,extra1,extra2 = predict_reply.classify(incoming_msg)
-    return reply,extra1,extra2
+    reply,extra1,extra2,mode = predict_reply.classify(incoming_msg)
+    return reply,extra1,extra2,mode
 
 if __name__ == '__main__':
     app.run(debug=True)
