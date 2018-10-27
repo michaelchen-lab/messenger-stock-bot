@@ -133,7 +133,8 @@ def send_message(recipient_id, message_text,extra1,extra2,mode):
                                     {
                                         "title": "View website",
                                         "type": "web_url",
-                                        "url": reply[1]
+                                        "url": reply[1],
+                                        "fallback_url": "https://google.com"
                                     }
                                 ]       
                             },
