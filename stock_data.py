@@ -26,7 +26,10 @@ def get_data(sym,request_type):
     return data
 
 def stock_info(stock):
+    global data_company
     data = get_data(stock,'book')
-    info = [data['quote']['close'],data['quote']['latestTime']]
+    data_company = get_data(stock,'company')
+    website = data_company['website']
+    info = [data['quote']['close'],data['quote']['latestTime'],website.replace('http://www.','')]
     return info
-  
+    
