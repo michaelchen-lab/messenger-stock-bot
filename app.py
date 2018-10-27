@@ -148,10 +148,6 @@ def send_message(recipient_id, message_text,extra1,extra2,mode):
                             {
                                 "title": reply[6],
                                 "subtitle": reply[7]
-                            },
-                            {
-                                "title": reply[8],
-                                "subtitle": reply[9]
                             }
                         ]
                     }
