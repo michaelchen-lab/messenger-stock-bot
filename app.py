@@ -42,7 +42,7 @@ def webhook():
                         message_text = messaging_event["message"]["text"]  # the message's text
             
                         reply,extra1,extra2,mode = predict(message_text)
-                        send_message(sender_id, reply,str(extra1),str(extra2),mode)
+                        send_message(sender_id, reply,str(extra1),str(extra2),str(mode))
                     except:
                         send_message(sender_id,str("Sorry! I didn't get that."),"","","other")    
                 if messaging_event.get("delivery"):  # delivery confirmation
@@ -131,11 +131,10 @@ def send_message(recipient_id, message_text,extra1,extra2,mode):
                                 "title": message_text[0],
                                 "buttons": [
                                     {
-                                        "title": "View website",
                                         "type": "web_url",
                                         "url": message_text[1],
-                                        "messenger_extensions": true,
-                                        "fallback_url": message_text[1]
+                                        "title": "View website",
+                                        "webview_height_ratio": "full"
                                     }
                                 ]       
                             },
