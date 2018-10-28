@@ -40,9 +40,11 @@ def webhook():
                     received_message(recipient_id)
                     try: 
                         message_text = messaging_event["message"]["text"]  # the message's text
-            
-                        reply,extra1,extra2,mode = predict(message_text)
-                        send_message(sender_id, reply,str(extra1),str(extra2),str(mode))
+
+                        ## reply,extra1,extra2 are input values; mode is reply type; num is no. of replies
+                        reply,extra1,extra2,mode,num = predict(message_text)
+                        for x in range(num):
+                            send_message(sender_id, reply,extra1,extra2,mode,x+1)
                     except:
                         send_message(sender_id,str("Sorry! I didn't get that."),"","","other")    
                 if messaging_event.get("delivery"):  # delivery confirmation
@@ -71,7 +73,7 @@ def webhook():
 def received_message(recipient_id):
     log("Message received from {recipient}".format(recipient=recipient_id))
 
-def send_message(recipient_id, message_text,extra1,extra2,mode):
+def send_message(recipient_id, message_text,extra1,extra2,mode,num):
 
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
 
@@ -114,8 +116,8 @@ def send_message(recipient_id, message_text,extra1,extra2,mode):
                                     },
                                     {
                                         "type":"postback",
-                                        "title":"Financials",
-                                        "payload": extra1+" financials"
+                                        "title":"Income Stats",
+                                        "payload": extra1+" income"
                                     }
                                 ]
                             }
@@ -126,45 +128,80 @@ def send_message(recipient_id, message_text,extra1,extra2,mode):
         })
     elif mode == 'list':
         ## When sending description of stock 
-        data = json.dumps({
-            "recipient":{
-                "id": recipient_id
-            },
-            "message": {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "list",
-                        "top_element_style": "compact",
-                        "elements": [
-                            {
-                                "title": message_text[0],
-                                "buttons": [
-                                    {
-                                        "type": "web_url",
-                                        "url": message_text[1],
-                                        "title": "View website",
-                                        "webview_height_ratio": "full"
-                                    }
-                                ]       
-                            },
-                            {
-                                "title": message_text[2],
-                                "subtitle": message_text[3]
-                            },
-                            {
-                                "title": message_text[4],
-                                "subtitle": message_text[5]
-                            },
-                            {
-                                "title": message_text[6],
-                                "subtitle": message_text[7]
-                            },
-                        ]
+
+        if num == '1':
+            data = json.dumps({
+                "recipient":{
+                    "id": recipient_id
+                },
+                "message": {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "list",
+                            "top_element_style": "compact",
+                            "elements": [
+                                {
+                                    "title": message_text[0],
+                                    "buttons": [
+                                        {
+                                            "type": "web_url",
+                                            "url": message_text[1],
+                                            "title": "View website",
+                                            "webview_height_ratio": "full"
+                                        }
+                                    ]                                     
+                                },
+                                {
+                                    "title": message_text[2],
+                                    "subtitle": message_text[3]
+                                },
+                                {
+                                    "title": message_text[4],
+                                    "subtitle": message_text[5]
+                                },
+                                {
+                                    "title": message_text[6],
+                                    "subtitle": message_text[7]
+                                },
+                            ]
+                        }
                     }
                 }
-            }
-        })
+            })
+        else:
+            data = json.dumps({
+                "recipient":{
+                    "id": recipient_id
+                },
+                "message": {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "list",
+                            "top_element_style": "compact",
+                            "elements": [
+                                {
+                                    "title": extra1[0],
+                                    "subtitle": extra1[1]
+                                },
+                                {
+                                    "title": extra1[2],
+                                    "subtitle": extra1[3]
+                                },
+                                {
+                                    "title": extra1[4],
+                                    "subtitle": extra1[5]
+                                },
+                                {
+                                    "title": extra1[6],
+                                    "subtitle": extra1[7]
+                                },
+                            ]
+                        }
+                    }
+                }
+            })
         
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
