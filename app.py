@@ -52,7 +52,17 @@ def webhook():
                     pass
 
                 if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
-                    pass
+
+                    sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
+                    recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
+                    received_message(recipient_id)
+                    try:
+                        message_text = messaging_event["postback"]["payload"]
+
+                        reply,extra1,extra2,mode = predict(message_text)
+                        send_message(sender_id, reply, str(extra1), str(extra2), str(mode))
+                    except:
+                        send_message(sender_id,str("Sorry! I didn't get that."),"","","other")
 
     return "ok", 200
   except:
