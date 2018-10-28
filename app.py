@@ -43,8 +43,7 @@ def webhook():
 
                         ## reply,extra1,extra2 are input values; mode is reply type; num is no. of replies
                         reply,extra1,extra2,mode,num = predict(message_text)
-                        for x in range(num):
-                            send_message(sender_id, reply,extra1,extra2,mode,x+1)
+                        send_message(sender_id, reply,extra1,extra2,mode,1)
                     except:
                         send_message(sender_id,str("Sorry! I didn't get that."),"","","other")    
                 if messaging_event.get("delivery"):  # delivery confirmation
