@@ -38,7 +38,7 @@ def stock_info(stock):
 
 def stock_describe(stock):
     data = get_data(stock,'company')
-    website = data['website']
+    website = data['website']+'/'
     try:
         website = website.replace('http://','https://')
     except:
