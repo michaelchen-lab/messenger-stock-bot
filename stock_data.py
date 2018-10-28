@@ -27,6 +27,14 @@ def get_data(sym,request_type):
     ## Returns the stock data requested by other functions
     return data
 
+def num(num):
+    ## Edit large numbers (e.g. 1234567 to $1,234,567)
+    try:
+        num = '$'+str(format(num, ',d'))
+    except:
+        pass
+    return num
+
 def stock_info(stock):
     data = get_data(stock,'book')
     data_company = get_data(stock,'company')
@@ -43,8 +51,24 @@ def stock_describe(stock):
         website = website.replace('http://','https://')
     except:
         pass
-
+    
     ## Shows the stock's name, CEO, sector, industry and description
     info = [data['companyName'],website,'CEO',data['CEO'],'Sector',data['sector'],'Industry',data['industry']]
-    return info 
+    return info
+
+def stock_income(stock):
+    global data
+    global info
+    data = get_data(stock,'financials?period=annual')
+    data2 = get_data(stock,'company')
+    website = data2['website']+'/'
+    try:
+        website = website.replace('http://','https://')
+    except:
+        pass
+
+    info = [data2['companyName'],website,'Operating Revenue',num(data['financials'][0]['operatingRevenue']),'Gross Profit',num(data['financials'][0]['grossProfit']),'Operating Income',num(data['financials'][0]['operatingIncome'])]
+    info2 = ['Operating Expense',num(data['financials'][0]['operatingExpense']),'Net Income',num(data['financials'][0]['netIncome']),"R&D",num(data['financials'][0]['researchAndDevelopment']),'Report Date',data['financials'][0]['reportDate']]
+    
+    return info,info2
     
