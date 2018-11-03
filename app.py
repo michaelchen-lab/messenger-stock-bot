@@ -47,7 +47,10 @@ def webhook():
 
                         ## reply,extra1,extra2 are input values; mode is reply type; num is no. of replies
                         reply,extra1,extra2,mode,num = predict(message_text)
+
+                        log("Predict correct") #delete
                         for x in range(num):
+                            log("Sending start correct") #delete
                             send_message(sender_id, reply,extra1,extra2,mode,x+1)
                     except:
                         send_message(sender_id,str("Sorry! I didn't get that."),"","","other",0)    
