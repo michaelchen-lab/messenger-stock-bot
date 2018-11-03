@@ -35,22 +35,16 @@ def webhook():
 
                 if messaging_event.get("message"):  # someone sent us a message
 
-                    log("Processing correct") #delete
-
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     received_message(recipient_id)
                     try:
-
-                        log("Starting correct") #delete
                         message_text = messaging_event["message"]["text"]  # the message's text
 
                         ## reply,extra1,extra2 are input values; mode is reply type; num is no. of replies
                         reply,extra1,extra2,mode,num = predict(message_text)
 
-                        log("Predict correct") #delete
                         for x in range(num):
-                            log("Sending start correct") #delete
                             send_message(sender_id, reply,extra1,extra2,mode,x+1)
                     except:
                         send_message(sender_id,str("Sorry! I didn't get that."),"","","other",0)    
@@ -68,8 +62,9 @@ def webhook():
                     try:
                         message_text = messaging_event["postback"]["payload"]
 
-                        reply,extra1,extra2,mode = predict(message_text)
-                        send_message(sender_id, reply, str(extra1), str(extra2), str(mode),0)
+                        reply,extra1,extra2,mode,num = predict(message_text)
+                        for x in range(num):
+                            send_message(sender_id, reply, str(extra1), str(extra2), str(mode),0)
                     except:
                         send_message(sender_id,str("Sorry! I didn't get that."),"","","other",0)
 
