@@ -106,10 +106,12 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
                     "type":"template",
                     "payload":{
                         "template_type":"generic",
+                        "image_aspect_ratio":"square",
                         "elements":[
                             {
                                 "title": extra1,
-                                "subtitle": str(message_text),
+                                "image_url": message_text[1],
+                                "subtitle": message_text[0],
                                 "buttons": [
                                     {
                                         "type":"postback",
