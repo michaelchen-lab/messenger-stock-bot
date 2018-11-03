@@ -222,8 +222,8 @@ def log(message):  # simple wrapper for logging to stdout on heroku
 
 ## Link to predict_reply.py
 def predict(incoming_msg):
-    reply,extra1,extra2,mode = predict_reply.classify(incoming_msg)
-    return reply,extra1,extra2,mode
+    reply,extra1,extra2,mode,num = predict_reply.classify(incoming_msg)
+    return reply,extra1,extra2,mode,num
 
 if __name__ == '__main__':
     app.run(debug=True)
