@@ -32,7 +32,7 @@ def num(num):
     try:
         num = '$'+str(format(num, ',d'))
     except:
-        pass
+        'Unavailable'
     return num
 
 def stock_info(stock):
