@@ -64,7 +64,7 @@ def webhook():
 
                         reply,extra1,extra2,mode,num = predict(message_text)
                         for x in range(num):
-                            send_message(sender_id, reply, str(extra1), str(extra2), str(mode),x+1)
+                            send_message(sender_id, reply, extra1, extra2, str(mode),x+1)
                     except:
                         send_message(sender_id,str("Sorry! I didn't get that."),"","","other",0)
 
