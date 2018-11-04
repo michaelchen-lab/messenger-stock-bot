@@ -42,7 +42,7 @@ def stock_info(stock):
     logo = get_data(stock,'logo')
 
     ## Shows the stock's latest price, the time of quote, and website url
-    info = [data['quote']['close'],data['quote']['latestTime'],website.replace('http://www.',''),logo['url']]
+    info = [data['quote']['close'],data['quote']['latestTime'],logo['url']]
     return info
 
 def stock_describe(stock):
