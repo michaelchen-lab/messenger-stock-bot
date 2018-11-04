@@ -21,7 +21,8 @@ def classify(msg):
         except:
             msg = msg.replace('Description','')
         match = best_match(msg.strip())
-        return stock_describe(match[0]),'','','list',1
+        info,info2 = stock_describe(match[0])
+        return info,info2,'','list',2
 
     elif "income" in msg or "Income" in msg:
         ## when the user asks for the income statement of a company
