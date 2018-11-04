@@ -97,37 +97,70 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
         })
     elif mode == 'symbol':
         ## When sending information on a stock
-        data = json.dumps({
-            "recipient": {
-                "id": recipient_id
-            },
-            "message": {
-                "attachment":{
-                    "type":"template",
-                    "payload":{
-                        "template_type":"generic",
-                        "elements":[
-                            {
-                                "title": extra1,
-                                "subtitle": message_text[0],
-                                "buttons": [
-                                    {
-                                        "type":"postback",
-                                        "title":"Description",
-                                        "payload": extra1+" description"
-                                    },
-                                    {
-                                        "type":"postback",
-                                        "title":"Income Stats",
-                                        "payload": extra1+" income"
-                                    }
-                                ]
-                            }
-                        ]
+        if num == 1:
+            data = json.dumps({
+                "recipient": {
+                    "id": recipient_id
+                },
+                "message": {
+                    "attachment":{
+                        "type":"template",
+                        "payload":{
+                            "template_type":"generic",
+                            "elements":[
+                                {
+                                    "title": extra1,
+                                    "subtitle": message_text[0],
+                                    "buttons": [
+                                        {
+                                            "type":"postback",
+                                            "title":"Description",
+                                            "payload": extra1+" description"
+                                        },
+                                        {
+                                            "type":"postback",
+                                            "title":"Dividends",
+                                            "payload": extra1+" dividends"
+                                        },
+                                        {
+                                            "type":"postback",
+                                            "title":"Valuation",
+                                            "payload": extra1+ " valuation"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
                     }
                 }
-            }
-        })
+            })
+        else:
+            data = json.dumps({
+                "recipient": {
+                    "id": recipient_id
+                },
+                "message": {
+                    "attachment": {
+                        "type":"template",
+                        "payload": {
+                            "template_type":"button",
+                            "text":"Financials",
+                            "buttons": [
+                                {
+                                    "type":"postback",
+                                    "title":"Income Statement",
+                                    "payload": extra1+" income"
+                                },
+                                {
+                                    "type":"postback",
+                                    "title":"Balance Sheet",
+                                    "payload": extra1+ " balance"
+                                }
+                            ]
+                        }
+                    }
+                }
+            })
     elif mode == 'list':
         ## When sending description of stock 
 
