@@ -12,7 +12,7 @@ def classify(msg):
         if match == []:
             return "Sorry, I don't understand you.","","","other",1
         info = stock_info(match[0])
-        return ["$"+str(info[0])+" (as of "+info[1]+")",info[2]],match[0],'',"symbol",1
+        return ["$"+str(info[0])+" (as of "+info[1]+")",info[2]],match[0],'',"symbol",2
     
     elif "description" in msg or "Description" in msg:
         ## when the user asks for the description of a company
