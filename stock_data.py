@@ -46,16 +46,19 @@ def stock_info(stock):
     return info
 
 def stock_describe(stock):
+    global info2
     data = get_data(stock,'company')
     website = data['website']+'/'
     try:
         website = website.replace('http://','https://')
     except:
         pass
+    data2 = get_data(stock,'stats')
     
     ## Shows the stock's name, CEO, sector, industry and description
     info = [data['companyName'],website,'CEO',data['CEO'],'Sector',data['sector'],'Industry',data['industry']]
-    return info
+    info2 = ['Ex-dividend Date',data2['exDividendDate'],'Beta',round(data2['beta'],2),'52 Week High-Low',str(data2['week52high'])+'-'+str(data2['week52low']),'MA50-MA200',str(round(data2['day50MovingAvg'],2))+'-'+str(round(data2['day200MovingAvg'],2))]
+    return info,info2
 
 def stock_income(stock):
     global data
