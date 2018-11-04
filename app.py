@@ -144,7 +144,7 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
                         "type":"template",
                         "payload": {
                             "template_type":"button",
-                            "text":"Company's Financial Statement",
+                            "text": extra1+"'s Financial Statement",
                             "buttons": [
                                 {
                                     "type":"postback",
