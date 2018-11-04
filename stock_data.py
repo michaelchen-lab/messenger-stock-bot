@@ -57,7 +57,7 @@ def stock_describe(stock):
     
     ## Shows the stock's name, CEO, sector, industry and description
     info = [data['companyName'],website,'CEO',data['CEO'],'Sector',data['sector'],'Industry',data['industry']]
-    info2 = ['Ex-dividend Date',data2['exDividendDate'],'Beta',round(data2['beta'],2),'52 Week High-Low',str(data2['week52high'])+'-'+str(data2['week52low']),'MA50-MA200',str(round(data2['day50MovingAvg'],2))+'-'+str(round(data2['day200MovingAvg'],2))]
+    info2 = ['Ex-dividend Date',data2['exDividendDate'],'Beta',str(round(data2['beta'],2)),'52 Week High-Low',str(data2['week52high'])+'-'+str(data2['week52low']),'MA50-MA200',str(round(data2['day50MovingAvg'],2))+'-'+str(round(data2['day200MovingAvg'],2))]
     return info,info2
 
 def stock_income(stock):
