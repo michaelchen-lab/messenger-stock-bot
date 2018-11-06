@@ -39,6 +39,12 @@ def num(num):
         num = 'Unavailable'
     return num
 
+def percent(num):
+    try:
+        return str(num)+'%'
+    except:
+        return 'Unavailable'
+
 def stock_info(stock):
     ## Returns general info about stock (the most basic feature)
     
@@ -71,6 +77,31 @@ def stock_describe(stock):
     info2 = ['Ex-dividend Date',exdividend,'Beta',str(round(data2['beta'],2)),'52 Week High-Low',str(data2['week52high'])+'-'+str(data2['week52low']),'MA50-MA200',str(round(data2['day50MovingAvg'],2))+'-'+str(round(data2['day200MovingAvg'],2))]
     return info,info2
 
+def stock_valuation(stock):
+    ## Return info for stock valuation
+
+    data = get_data(stock,'financials?period=annual')
+    data2 = get_data(stock,'stats')
+    data3 = get_data(stock,'earnings')
+    data4 = get_data(stock,'company')
+
+    price = get_data(stock,'price')
+    eps = data3['earnings'][0]['actualEPS']+data3['earnings'][1]['actualEPS']+data3['earnings'][2]['actualEPS']+data3['earnings'][3]['actualEPS']
+    pe_ratio = round(price/eps,2)
+    try:
+        debt_equity = round(data['financials'][0]['totalDebt']/data['financials'][0]['shareholderEquity'],2)
+    except:
+        debt_equity = 'Unavailable'
+    try:
+        price_cashflow = round(data2['marketcap']/data['financials'][0]['cashFlow'],2)
+    except:
+        price_cashflow = 'Unavailable'
+            
+    info = [data4['companyName'],'https://seekingalpha.com/symbol/'+stock+'/valuation','Market Cap.',num(data2['marketcap']),'Price/Earnings Ratio (P/E)',str(pe_ratio),'Return on Equity (ROE)',percent(data2['returnOnEquity']),]
+    info2 = ['Price/Sales Ratio (P/S)',str(round(data2['priceToSales'],2)),'Price/Book Ratio (P/B)',str(data2['priceToBook']),'Price/Cash Flow Ratio',str(price_cashflow),'Debt-to-Equity',str(debt_equity)]
+
+    return info,info2
+    
 def stock_income(stock):
     ## Return info for stock income statement
     
@@ -84,8 +115,6 @@ def stock_income(stock):
 
 def stock_balance(stock):
     ## Return the info for stock balance sheet
-
-    global data
 
     data = get_data(stock,'financials?period=annual')
     data2 = get_data(stock,'company')
