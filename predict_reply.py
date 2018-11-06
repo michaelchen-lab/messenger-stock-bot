@@ -34,6 +34,25 @@ def classify(msg):
         info,info2 = stock_income(match[0])
         return info,info2,'','list',2
 
+    elif "balance" in msg or "Balance" in msg:
+        ## when the user asks for the balance sheet of a company
+        try:
+            msg = msg.replace('income','')
+        except:
+            msg = msg.replace('Income','')
+        ## in case user adds extra 'sheet'
+        try:
+            msg = replace('sheet','')
+        except:
+            pass
+        try:
+            msg = replace('Sheet','')
+        except:
+            pass
+        match = best_match(msg.strip())
+        info,info2 = stock_balance(match[0])
+        return info,info2,'','list',2
+
     return "Sorry, I don't understand you.","","","other",1
 
 ## Link to stock_data.py
@@ -45,6 +64,8 @@ def stock_describe(stock):
     return sd.stock_describe(stock)
 def stock_income(stock):
     return sd.stock_income(stock)
+def stock_balance(stock):
+    return sd.stock_balance(stock)
 
 if __name__ == '__main__':
     while(1):
