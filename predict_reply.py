@@ -20,8 +20,26 @@ def classify(msg):
             msg = msg.replace('description','')
         except:
             msg = msg.replace('Description','')
+
         match = best_match(msg.strip())
         info,info2 = stock_describe(match[0])
+        return info,info2,'','list',2
+
+    elif "valuation" in msg or "Valuation" in msg or "value" in msg or "Value" in msg:
+        ## when the user asks for the valuation of a company
+        if "valuation" in msg or "Valuation" in msg:    
+            try:
+                msg = msg.replace('valuation','')
+            except:
+                msg = msg.replace('Valuation','')
+        else:
+            try:
+                msg = msg.replace('value','')
+            except:
+                msg = msg.replace('Value','')
+
+        match = best_match(msg.strip())
+        info,info2 = stock_valuation(match[0])
         return info,info2,'','list',2
 
     elif "income" in msg or "Income" in msg:
@@ -30,6 +48,16 @@ def classify(msg):
             msg = msg.replace('income','')
         except:
             msg = msg.replace('Income','')
+        ## in case user adds 'statement'
+        try:
+            msg = msg.replace('statement','')
+        except:
+            pass
+        try:
+            msg = msg.replace('Statement','')
+        except:
+            pass
+        
         match = best_match(msg.strip())
         info,info2 = stock_income(match[0])
         return info,info2,'','list',2
@@ -40,15 +68,16 @@ def classify(msg):
             msg = msg.replace('balance','')
         except:
             msg = msg.replace('balance','')
-        ## in case user adds extra 'sheet'
+        ## in case user adds 'sheet'
         try:
-            msg = replace('sheet','')
+            msg = msg.replace('sheet','')
         except:
             pass
         try:
-            msg = replace('Sheet','')
+            msg = msg.replace('Sheet','')
         except:
             pass
+        
         match = best_match(msg.strip())
         info,info2 = stock_balance(match[0])
         return info,info2,'','list',2
@@ -66,7 +95,10 @@ def stock_income(stock):
     return sd.stock_income(stock)
 def stock_balance(stock):
     return sd.stock_balance(stock)
+def stock_valuation(stock):
+    return sd.stock_valuation(stock)
 
+## for testing purposes
 if __name__ == '__main__':
     while(1):
       msg=input("Enter something: ")
