@@ -37,9 +37,9 @@ def classify(msg):
     elif "balance" in msg or "Balance" in msg:
         ## when the user asks for the balance sheet of a company
         try:
-            msg = msg.replace('income','')
+            msg = msg.replace('balance','')
         except:
-            msg = msg.replace('Income','')
+            msg = msg.replace('balance','')
         ## in case user adds extra 'sheet'
         try:
             msg = replace('sheet','')
