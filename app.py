@@ -86,7 +86,7 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
         "Content-Type": "application/json"
     }
     if mode == 'other':
-        ## When the bot is not sending stock messages
+        ## When the bot has an error or user message could not be understood.
         data = json.dumps({
             "recipient": {
                 "id": recipient_id
@@ -98,6 +98,7 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
     elif mode == 'symbol':
         ## When sending information on a stock
         if num == 1:
+            ## First part of message
             data = json.dumps({
                 "recipient": {
                     "id": recipient_id
@@ -135,6 +136,7 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
                 }
             })
         else:
+            ## Second part of message
             data = json.dumps({
                 "recipient": {
                     "id": recipient_id
@@ -162,9 +164,10 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
                 }
             })
     elif mode == 'list':
-        ## When sending description of stock 
+        ## When sending any type of description to user. All messages sent using list template follows the same format as below
 
         if num == 1:
+            ## First part
             data = json.dumps({
                 "recipient":{
                     "id": recipient_id
@@ -182,7 +185,7 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
                                         {
                                             "type": "web_url",
                                             "url": message_text[1],
-                                            "title": "View website",
+                                            "title": "View More",
                                             "webview_height_ratio": "full"
                                         }
                                     ]                                     
@@ -205,6 +208,7 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
                 }
             })
         else:
+            ## Second part
             data = json.dumps({
                 "recipient":{
                     "id": recipient_id
