@@ -20,8 +20,8 @@ def classify(msg):
             msg = msg.replace('Description','')
 
         match = best_match(msg.strip())
-        info = stock_describe(match[0])
-        return info,match[0],'','list',2
+        info,info2 = stock_describe(match[0])
+        return info,info2,'','list',2
 
     elif "dividends" in msg or "dividend" in msg or "Dividend" in msg:
         ## when the asks for the dividend of a company
