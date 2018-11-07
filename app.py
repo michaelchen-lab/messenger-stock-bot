@@ -163,6 +163,53 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
                     }
                 }
             })
+    elif mode == 'dividend':
+        data = json.dumps({
+                "recipient":{
+                    "id": recipient_id
+                },
+                "message": {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "list",
+                            "top_element_style": "compact",
+                            "elements": [
+                                {
+                                    "title": message_text[0],
+                                    "buttons": [
+                                        {
+                                            "type": "web_url",
+                                            "url": message_text[1],
+                                            "title": "View More",
+                                            "webview_height_ratio": "full"
+                                        }
+                                    ]                                     
+                                },
+                                {
+                                    "title": message_text[2],
+                                    "subtitle": message_text[3]
+                                },
+                                {
+                                    "title": message_text[4],
+                                    "subtitle": message_text[5]
+                                },
+                                {
+                                    "title": message_text[6],
+                                    "subtitle": message_text[7]
+                                },  
+                            ],
+                            "buttons": [
+                                {
+                                    "title": "Dividend History",
+                                    "type": "postback",
+                                    "payload": extra1+' dividend history'
+                                }
+                            ]
+                        }
+                    }
+                }
+            })
     elif mode == 'list':
         ## When sending any type of description to user. All messages sent using list template follows the same format as below
 
