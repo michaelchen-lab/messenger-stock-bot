@@ -9,8 +9,6 @@ def classify(msg):
     if " " not in msg:
         ## when the user enters a company name or ticker symbol
         match = best_match(msg)
-        if match == []:
-            return "Sorry, I don't understand you.","","","other",1
         info = stock_info(match[0])
         return ["$"+str(info[0])+" (as of "+info[1]+")",info[2]],match[0],'',"symbol",2
     
@@ -22,8 +20,21 @@ def classify(msg):
             msg = msg.replace('Description','')
 
         match = best_match(msg.strip())
-        info,info2 = stock_describe(match[0])
-        return info,info2,'','list',2
+        info = stock_describe(match[0])
+        return info,match[0],'','list',2
+
+    elif "dividends" in msg or "dividend" in msg or "Dividend" in msg:
+        ## when the asks for the dividend of a company
+        if "dividends" in msg:
+            msg = msg.replace('dividends','')
+        elif "dividend" in msg:
+            msg = msg.replace('dividend','')
+        elif "Dividend" in msg:
+            msg = msg.replace('Dividend','')
+
+        match = best_match(msg.strip())
+        info = stock_dividend(match[0])
+        return info,match[0],'','dividend',1
 
     elif "valuation" in msg or "Valuation" in msg or "value" in msg or "Value" in msg:
         ## when the user asks for the valuation of a company
@@ -97,6 +108,8 @@ def stock_balance(stock):
     return sd.stock_balance(stock)
 def stock_valuation(stock):
     return sd.stock_valuation(stock)
+def stock_dividend(stock):
+    return sd.stock_dividend(stock)
 
 ## for testing purposes
 if __name__ == '__main__':
