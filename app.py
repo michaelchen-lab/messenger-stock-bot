@@ -248,7 +248,7 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
                                 {
                                     "title": message_text[6],
                                     "subtitle": message_text[7]
-                                },
+                                }
                             ]
                         }
                     }
