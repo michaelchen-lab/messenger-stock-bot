@@ -34,6 +34,8 @@ def classify(msg):
 
         match = best_match(msg.strip())
         info = stock_dividend(match[0])
+        if info == 0:
+            return "This stock does not distribute dividends",'','','other',1
         return info,match[0],'','dividend',1
 
     elif "valuation" in msg or "Valuation" in msg or "value" in msg or "Value" in msg:
