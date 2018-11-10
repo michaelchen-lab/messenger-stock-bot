@@ -47,7 +47,7 @@ def webhook():
                         for x in range(num):
                             send_message(sender_id, reply,extra1,extra2,mode,x+1)
                     except:
-                        send_message(sender_id,str("Sorry! I didn't get that."),"","","other",0)    
+                        send_message(sender_id,str("Sorry! I didn't get that."),"","","other",1)    
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
 
@@ -66,7 +66,7 @@ def webhook():
                         for x in range(num):
                             send_message(sender_id, reply, extra1, extra2, str(mode),x+1)
                     except:
-                        send_message(sender_id,str("Sorry! I didn't get that."),"","","other",0)
+                        send_message(sender_id,str("Sorry! I didn't get that."),"","","other",1)
 
     return "ok", 200
   except:
@@ -121,7 +121,7 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
                                         {
                                             "type":"postback",
                                             "title":"Dividends",
-                                            "payload": extra1+" dividends"
+                                            "payload": extra1+" dividends verified"
                                         },
                                         {
                                             "type":"postback",
@@ -203,7 +203,7 @@ def send_message(recipient_id, message_text,extra1,extra2,mode,num):
                                 {
                                     "title": "Dividend History",
                                     "type": "postback",
-                                    "payload": extra1+' dividend history'
+                                    "payload": extra1+' dividend history verified'
                                 }
                             ]
                         }
