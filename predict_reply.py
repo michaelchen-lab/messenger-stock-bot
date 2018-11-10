@@ -43,9 +43,9 @@ def classify(msg):
         if info == 0:
             return "This stock does not distribute dividends.",'','','other',1
         if info2 == '':
-            return info,'','','list','1'
+            return info,'','','list',1
         else:
-            return info,info2,'','list','2'
+            return info,info2,'','list',2
 
     elif "dividends" in msg or "dividend" in msg or "Dividend" in msg:
         ## when the user asks for the dividend of a company
