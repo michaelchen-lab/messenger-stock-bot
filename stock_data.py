@@ -84,6 +84,7 @@ def stock_describe(stock):
     return info,info2
 
 def find_dividend(data):
+    ## Find all the dividend payments
     
     dates,dividends = [],[]
     data = data['Time Series (Daily)']
@@ -95,8 +96,8 @@ def find_dividend(data):
     return dates,dividends
 
 def payout_frequency(dates):
-
     ## Find the frequency of dividend payment
+    
     previous_year = int(dates[0][:-6])-1
     frequency = 0
     for x in dates:
@@ -108,8 +109,6 @@ def payout_frequency(dates):
 def stock_dividend(stock):
     ## Returns info for stock dividend
 
-    global data3
-
     try:
         ## Uses the ALPHAVANTAGE API
         original = urllib.request.urlopen('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&symbol='+stock+'&apikey=3VWEA280OOGR9AL4')
@@ -120,12 +119,15 @@ def stock_dividend(stock):
     data = json.load(original)
     data2 = get_data(stock,'stats')
     data3 = get_data(stock,'earnings')
+    if data2['exDividendDate'] == 0: ## if the stock does not have dividends
+        return 0
+    else:
+        exdividend_date = data2['exDividendDate'][:-11]
 
     price = get_data(stock,'price')
     dates,dividends = find_dividend(data)
     frequency = payout_frequency(dates)
 
-    exdividend_date = data2['exDividendDate'][:-11]
     if frequency == 12:
         dividend_frequency = 'Monthly'
     elif frequency == 4:
@@ -138,8 +140,11 @@ def stock_dividend(stock):
         dividend_frequency = 'Unavailable'
     annual_payout = round(float(dividends[0])*frequency,2)
     dividend_yield = str(round((annual_payout/float(price))*100,2))+'%'
-    annual_eps = float(data3['earnings'][0]['actualEPS'])+float(data3['earnings'][1]['actualEPS'])+float(data3['earnings'][2]['actualEPS'])+float(data3['earnings'][3]['actualEPS'])
-    payout_ratio = str(round((annual_payout/annual_eps)*100,2))+'%'
+    try:
+        annual_eps = float(data3['earnings'][0]['actualEPS'])+float(data3['earnings'][1]['actualEPS'])+float(data3['earnings'][2]['actualEPS'])+float(data3['earnings'][3]['actualEPS'])
+        payout_ratio = str(round((annual_payout/annual_eps)*100,2))+'%'
+    except:
+        payout_ratio = 'Unavailable'
 
     info = [data2['companyName'],'https://seekingalpha.com/symbol/'+stock+'/dividends/scorecard','Ex-dividend Date',exdividend_date+' ('+dividend_frequency+')','Dividend Yield: '+dividend_yield,'Annual Payout: '+str(annual_payout),'Payout Ratio',payout_ratio]
     return info
