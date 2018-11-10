@@ -106,9 +106,15 @@ def payout_frequency(dates):
 
     return frequency
 
-def stock_dividend(stock):
+def stock_dividend(stock,verification):
     ## Returns info for stock dividend
 
+    data2 = get_data(stock,'stats')
+    if verification is 'no': ## when it is unsure whether the stock has a dividend
+        if data2['exDividendDate'] == 0:
+            return 0
+        else:
+            pass
     try:
         ## Uses the ALPHAVANTAGE API
         original = urllib.request.urlopen('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&symbol='+stock+'&apikey=3VWEA280OOGR9AL4')
@@ -117,27 +123,11 @@ def stock_dividend(stock):
         print("\nInvalid Entry")
         start()
     data = json.load(original)
-    data2 = get_data(stock,'stats')
     data3 = get_data(stock,'earnings')
-    if data2['exDividendDate'] == 0: ## if the stock does not have dividends
-        return 0
-    else:
-        exdividend_date = data2['exDividendDate'][:-11]
 
     price = get_data(stock,'price')
     dates,dividends = find_dividend(data)
     frequency = payout_frequency(dates)
-
-    if frequency == 12:
-        dividend_frequency = 'Monthly'
-    elif frequency == 4:
-        dividend_frequency = 'Quarterly'
-    elif frequency == 2:
-        dividend_frequency = 'Biannually'
-    elif frequency == 1:
-        dividend_frequency = 'Annually'
-    else:
-        dividend_frequency = 'Unavailable'
     annual_payout = round(float(dividends[0])*frequency,2)
     dividend_yield = str(round((annual_payout/float(price))*100,2))+'%'
     try:
@@ -146,8 +136,69 @@ def stock_dividend(stock):
     except:
         payout_ratio = 'Unavailable'
 
-    info = [data2['companyName'],'https://seekingalpha.com/symbol/'+stock+'/dividends/scorecard','Ex-dividend Date',exdividend_date+' ('+dividend_frequency+')','Dividend Yield: '+dividend_yield,'Annual Payout: '+str(annual_payout),'Payout Ratio',payout_ratio]
+    info = [data2['companyName'],'https://seekingalpha.com/symbol/'+stock+'/dividends/scorecard','Ex-dividend Date',data2['exDividendDate'],'Dividend Yield: '+dividend_yield,'Annual Payout: '+str(annual_payout),'Payout Ratio',payout_ratio]
     return info
+
+def div_payout(dates,dividends):
+    ## Return the historical annual dividend payout
+
+    all_dividends = {}
+    for x in range(len(dates)): ## Format: {Year: [all the dividends in that year], ...}
+        if dates[x][:-6] in all_dividends:
+            all_dividends[dates[x][:-6]].append(float(dividends[x]))
+        else:
+            all_dividends[dates[x][:-6]] = [float(dividends[x])]
+    del all_dividends[dates[0][:-6]] ## Delete current year 
+
+    annual_payouts = {}
+    for year,dividends in all_dividends.items():
+        annual_payouts[year] = '$'+str(round(sum(dividends),2)) ## Add up all the dividends of the year
+        
+    return annual_payouts
+
+def stock_div_history(stock,verification):
+    ## Return info stock dividend history
+
+    global dates,dividends
+    
+    def info_split(info):
+        info2 = info[8:16]
+        info = info[:8]
+        return info,info2
+
+    if verification is 'no': ## when it is unsure whether the stock has a dividend
+        data2 = get_data(stock,'stats')
+        if data2['exDividendDate'] == 0:
+            return 0
+        else:
+            pass
+    try:
+        ## Uses the ALPHAVANTAGE API
+        original = urllib.request.urlopen('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&symbol='+stock+'&apikey=3VWEA280OOGR9AL4')
+
+    except ValueError:
+        print("\nInvalid Entry")
+        start()
+    data = json.load(original)
+
+    dates,dividends = find_dividend(data)
+    historical_payout = div_payout(dates,dividends)
+    
+    info = [stock+' Dividend History','https://seekingalpha.com/symbol/'+stock+'/dividends/history']
+    for year,payout in historical_payout.items():
+        info.extend([year,payout])
+    if len(info) > 16:
+        info = info[:16]
+    elif len(info) == 4 or len(info) == 12:
+        info.extend([str(int(info[-2])-1),'-',str(int(info[-2])-2),'-'])
+    elif len(info) == 6 or len(info) == 14:
+        info.extend([str(int(info[-2])-1),'-'])
+    elif len(info) == 10:
+        info.extend([str(int(info[-2])-1),'-',str(int(info[-2])-2),'-',str(int(info[-2])-3),'-'])
+
+    if len(info) == 16:
+        info,info2 = info_split(info)
+    return info,info2
 
 def stock_valuation(stock):
     ## Return info for stock valuation
@@ -183,7 +234,7 @@ def stock_valuation(stock):
     info2 = ['Price/Sales Ratio (P/S)',str(round(data2['priceToSales'],2)),'Price/Book Ratio (P/B)',str(data2['priceToBook']),'Price/Cash Flow Ratio',str(price_cashflow),'Debt-to-Equity',str(debt_equity)]
 
     return info,info2
-    
+
 def stock_income(stock):
     ## Return info for stock income statement
     
