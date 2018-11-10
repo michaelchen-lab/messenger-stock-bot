@@ -153,14 +153,24 @@ def stock_valuation(stock):
     data4 = get_data(stock,'company')
 
     price = get_data(stock,'price')
-    eps = data3['earnings'][0]['actualEPS']+data3['earnings'][1]['actualEPS']+data3['earnings'][2]['actualEPS']+data3['earnings'][3]['actualEPS']
-    pe_ratio = round(price/eps,2)
+    try:
+        eps = data3['earnings'][0]['actualEPS']+data3['earnings'][1]['actualEPS']+data3['earnings'][2]['actualEPS']+data3['earnings'][3]['actualEPS']
+    except:
+        eps = 'Unavailable'
+    try:
+        pe_ratio = round(price/eps,2)
+        if pe_ratio < 0: ## P/E cannot be 0
+            pe_ratio = '-'
+    except:
+        pe_ratio = 'Unavailable'
     try:
         debt_equity = round(data['financials'][0]['totalDebt']/data['financials'][0]['shareholderEquity'],2)
     except:
         debt_equity = 'Unavailable'
     try:
         price_cashflow = round(data2['marketcap']/data['financials'][0]['cashFlow'],2)
+        if price_cashflow < 0: ## P/Cash Flow cannot be 0
+            price_cashflow = '-'
     except:
         price_cashflow = 'Unavailable'
             
