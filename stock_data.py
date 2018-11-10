@@ -59,6 +59,12 @@ def stock_info(stock):
 
 def stock_describe(stock):
     ## Returns info for stock description
+
+    def ceo(ceo):
+        if ceo == '':
+            return '-'
+        else:
+            return ceo
     
     data = get_data(stock,'company')
     website = data['website']+'/'
@@ -73,7 +79,7 @@ def stock_describe(stock):
         exdividend = 'None'
     
     ## Shows the stock's name, CEO, sector, industry and description
-    info = [data['companyName'],website,'CEO',data['CEO'],'Sector',data['sector'],'Industry',data['industry']]
+    info = [data['companyName'],website,'CEO',ceo(data['CEO']),'Sector',data['sector'],'Industry',data['industry']]
     info2 = ['Ex-dividend Date',exdividend,'Beta',str(round(data2['beta'],2)),'52 Week High-Low',str(data2['week52high'])+'-'+str(data2['week52low']),'MA50-MA200',str(round(data2['day50MovingAvg'],2))+'-'+str(round(data2['day200MovingAvg'],2))]
     return info,info2
 
